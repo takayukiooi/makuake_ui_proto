@@ -10,7 +10,7 @@ Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
       id: json['id'] as int,
       title: json['title'] as String,
       collectedMoney: json['collected_money'] as int,
-      collectedSuppoter: json['collected_supporter'] as int,
+      collectedSuppoter: json['collected_supporter'] as int?,
       thumbnailUrl: json['thumbnail_url'] as String,
       returns: (json['returns'] as List<dynamic>?)
               ?.map((e) => ReturnItem.fromJson(e as Map<String, dynamic>))

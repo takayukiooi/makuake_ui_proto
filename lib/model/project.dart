@@ -12,7 +12,7 @@ class Project extends Equatable {
     required this.id,
     required this.title,
     required this.collectedMoney,
-    required this.collectedSuppoter,
+    this.collectedSuppoter,
     required this.thumbnailUrl,
     this.returns = const [],
     this.percent,
@@ -38,7 +38,7 @@ class Project extends Equatable {
   @JsonKey(name: 'collected_money')
   final int collectedMoney;
   @JsonKey(name: 'collected_supporter')
-  final int collectedSuppoter;
+  final int? collectedSuppoter;
 
   @JsonKey(name: 'thumbnail_url')
   final String thumbnailUrl;

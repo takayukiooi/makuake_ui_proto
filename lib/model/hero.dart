@@ -6,17 +6,17 @@ import 'project.dart';
 part 'hero.g.dart';
 
 @JsonSerializable()
-class Hero extends Equatable {
-  const Hero({
+class HeroItem extends Equatable {
+  const HeroItem({
     required this.id,
     required this.bgUrl,
     required this.order,
     required this.project,
   });
 
-  factory Hero.fromJson(Map<String, dynamic> json) => _$HeroFromJson(json);
+  factory HeroItem.fromJson(Map<String, dynamic> json) => _$HeroItemFromJson(json);
 
-  Map<String, dynamic> toJson() => _$HeroToJson(this);
+  Map<String, dynamic> toJson() => _$HeroItemToJson(this);
 
   final int id;
 

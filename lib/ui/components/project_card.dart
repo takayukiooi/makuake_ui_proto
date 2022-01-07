@@ -83,7 +83,7 @@ class ProjectCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomPaint(
-                      painter: _CollectedPercent(project.percent ?? 0),
+                      painter: CollectedPercent(project.percent ?? 0),
                     ),
                   ),
                   SizedBox(
@@ -103,8 +103,8 @@ class ProjectCard extends StatelessWidget {
   }
 }
 
-class _CollectedPercent extends CustomPainter {
-  const _CollectedPercent(this.percent);
+class CollectedPercent extends CustomPainter {
+  const CollectedPercent(this.percent);
 
   final int percent;
 

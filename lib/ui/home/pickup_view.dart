@@ -93,6 +93,13 @@ class HeroWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text('${hero.project.collectedMoney}円'),
+                      const Spacer(),
+                      SizedBox(
+                        width: 32,
+                        child: CustomPaint(
+                          painter: CollectedPercent(hero.project.percent ?? 0),
+                        ),
+                      ),
                       Text('${hero.project.percent}%'),
                       Text('${hero.project.timeLeftText}'),
                     ],

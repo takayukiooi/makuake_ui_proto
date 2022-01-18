@@ -34,14 +34,11 @@ class ProjectCard extends StatelessWidget {
                 topLeft: Radius.circular(4.0),
                 topRight: Radius.circular(4.0),
               ),
-              child: Hero(
-                tag: '$kProjectCardImageTag${project.id}',
-                child: Image.network(
-                  project.thumbnailUrl,
-                  width: thumbnailWidth,
-                  height: thumbnailHeight,
-                  fit: BoxFit.fill,
-                ),
+              child: Image.network(
+                project.thumbnailUrl,
+                width: thumbnailWidth,
+                height: thumbnailHeight,
+                fit: BoxFit.fill,
               ),
             ),
             Expanded(

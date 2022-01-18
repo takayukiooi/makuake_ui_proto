@@ -99,16 +99,19 @@ class _TabRootState extends State<TabRoot> {
   }
 
   Future<bool> _onWillPop() async {
-    final key = _models[_currentIndex].navigator.key as GlobalKey<NavigatorState>;
-    final isFirstRouteInCurrentTab = await key.currentState?.maybePop() ?? false;
-    if (isFirstRouteInCurrentTab) {
-      if (_currentIndex != 0) {
-        _currentIndex = 0;
-        return false;
+    final key = _models[_currentIndex].navigator.key as GlobalKey<NavigatorState>?;
+    if (key != null) {
+      final isFirstRouteInCurrentTab = await key.currentState?.maybePop() ?? false;
+      if (isFirstRouteInCurrentTab) {
+        if (_currentIndex != 0) {
+          _currentIndex = 0;
+          return false;
+        }
       }
-    }
 
-    return isFirstRouteInCurrentTab;
+      return isFirstRouteInCurrentTab;
+    }
+    return true;
   }
 
   void _onPressNavigationButton(int index) {

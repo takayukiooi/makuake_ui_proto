@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final os = Platform.isIOS ? 'makuake-ios' : 'makuake-android';
     return Scaffold(
+      appBar: AppBar(),
       body: WebView(
         initialUrl: kMakuakeLoginUrl,
         javascriptMode: JavascriptMode.unrestricted,
@@ -43,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
           print('allowing navigation to $request');
           if (await isLoginSucceed()) {
             context.read<AppState>().loginSucceed();
-            Navigator.pop(context);
+            Navigator.of(context).maybePop();
             return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;

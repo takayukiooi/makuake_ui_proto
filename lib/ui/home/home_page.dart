@@ -1,45 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_tab_view/infinite_scroll_tab_view.dart';
 import 'package:makuake_ui_proto/ui/home/pickup_view.dart';
 import 'package:makuake_ui_proto/ui/home/recent_view.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late List<Widget> tabViews;
+
+  @override
+  void initState() {
+    super.initState();
+    tabViews = [
+      RecentView(
+        key: PageStorageKey('RecentView'),
+      ),
+      PickupView(),
+      RankingView(),
+      FeatureView(),
+      RecommendView(),
+      MyTagView(),
+    ];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DefaultTabController(
-        length: HomePageTab.values.length,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, value) {
-            return [
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                floating: true,
-                pinned: true,
-                title: TabBar(
-                  isScrollable: true,
-                  tabs: HomePageTab.values.map((item) => Tab(text: item.displayText())).toList(),
-                  labelColor: Colors.black,
-                  indicatorColor: Colors.black,
-                ),
-              ),
-            ];
+      body: SafeArea(
+        child: InfiniteScrollTabView(
+          contentLength: HomePageTab.values.length,
+          onTabTap: (index) {
+            debugPrint('tapped $index');
           },
-          body: const TabBarView(
-            children: [
-              RecentView(
-                key: PageStorageKey('RecentView'),
-              ),
-              PickupView(),
-              RankingView(),
-              FeatureView(),
-              RecommendView(),
-              MyTagView(),
-            ],
+          tabBuilder: (index, isSelected) => Text(
+            HomePageTab.values[index].displayText(),
+            style: TextStyle(
+              color: isSelected ? Colors.black : Colors.grey,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
           ),
+          separator: const BorderSide(color: Colors.transparent, width: 3.0),
+          onPageChanged: (index) => debugPrint('page changed to $index.'),
+          indicatorColor: Colors.black,
+          pageBuilder: (context, index, _) {
+            return tabViews[index];
+          },
         ),
       ),
     );

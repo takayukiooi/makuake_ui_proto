@@ -1,92 +1,93 @@
 import 'package:flutter/material.dart';
-import 'package:makuake_ui_proto/data/recent_projects.dart';
-import 'package:makuake_ui_proto/model/response/projects_response.dart';
-import 'package:makuake_ui_proto/ui/components/project_card.dart';
 
-class RecentView extends StatelessWidget {
-  const RecentView({
+class WillCloseSoon extends StatefulWidget {
+  const WillCloseSoon({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final recentProject = ProjectsResponse.fromJson(kRecentApiResponse).projects.getRange(0, 10).toList();
+  State<WillCloseSoon> createState() => _WillCloseSoonState();
+}
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: _TodayRecommend(),
+class _WillCloseSoonState extends State<WillCloseSoon> with SingleTickerProviderStateMixin {
+  List<Color> colorList = [
+    Color(0xFFFB2A79),
+    Color(0xFFFFE600),
+    Color(0xFFBBF117),
+    Color(0xFF1AD4FF),
+  ];
+  int index = 0;
+  Color bottomColor = Color(0xFFFB2A79);
+  Color topColor = Color(0xFF1AD4FF);
+  Alignment begin = Alignment.bottomRight;
+  Alignment end = Alignment.topLeft;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        bottomColor = Color(0xFFFFE600);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(seconds: 2),
+      onEnd: () {
+        setState(() {
+          index = index + 1;
+          // animate the color
+          bottomColor = colorList[index % colorList.length];
+          topColor = colorList[(index + 1) % colorList.length];
+        });
+      },
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(16.0),
+        gradient: LinearGradient(
+          begin: begin,
+          end: end,
+          colors: [
+            bottomColor,
+            topColor,
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 32.0,
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 16.0),
-              child: Text(
-                '今日始まったプロジェクト',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
+          Icon(
+            Icons.access_time,
+            color: Colors.white,
           ),
-          SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return ProjectCard(project: recentProject[index]);
-              },
-              childCount: recentProject.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              childAspectRatio: 0.8,
-            ),
+          SizedBox(
+            height: 8.0,
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 16.0),
-              child: Text(
-                '昨日',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
+          Text(
+            "応援購入は本日まで！",
+            style: Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return ProjectCard(project: recentProject[index]);
-              },
-              childCount: recentProject.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              childAspectRatio: 0.8,
-            ),
+          SizedBox(
+            height: 32.0,
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-              child: Text(
-                '一週間以上前',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
+          Text(
+            "あなたが\"気になる\"したプロジェクトが\n24時間以内に終了します",
+            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return ProjectCard(project: recentProject[index]);
-              },
-              childCount: recentProject.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              childAspectRatio: 0.8,
-            ),
+          SizedBox(
+            height: 32.0,
+          ),
+          _WillCloseSoonList(),
+          SizedBox(
+            height: 32.0,
           ),
         ],
       ),
@@ -94,16 +95,16 @@ class RecentView extends StatelessWidget {
   }
 }
 
-class _TodayRecommend extends StatefulWidget {
-  const _TodayRecommend({
+class _WillCloseSoonList extends StatefulWidget {
+  const _WillCloseSoonList({
     Key? key,
   }) : super(key: key);
 
   @override
-  __TodayRecommendState createState() => __TodayRecommendState();
+  _WillCloseSoonListState createState() => _WillCloseSoonListState();
 }
 
-class __TodayRecommendState extends State<_TodayRecommend> {
+class _WillCloseSoonListState extends State<_WillCloseSoonList> {
   final pageController = PageController(viewportFraction: 0.8);
   final List<int> projects = List.generate(5, (index) => index);
 
@@ -111,13 +112,6 @@ class __TodayRecommendState extends State<_TodayRecommend> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 32, 0, 16),
-          child: Text(
-            "本日のあなたへのおすすめ",
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
         SizedBox(
           height: 320,
           child: PageView(
@@ -127,7 +121,7 @@ class __TodayRecommendState extends State<_TodayRecommend> {
                 .map(
                   (project) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: _TodayRecommendCard(),
+                    child: _WillCloseSoonListItem(),
                   ),
                 )
                 .toList(),
@@ -138,8 +132,8 @@ class __TodayRecommendState extends State<_TodayRecommend> {
   }
 }
 
-class _TodayRecommendCard extends StatelessWidget {
-  const _TodayRecommendCard({
+class _WillCloseSoonListItem extends StatelessWidget {
+  const _WillCloseSoonListItem({
     Key? key,
     this.imageUrl = "https://hayabusa.io/makuake/upload/project/21703/main_21703.png?format=png\u0026ttl=31536000\u0026version=1640855728\u0026force",
     this.projectUrl = "https://www.makuake.com/project/moft_mat/",
@@ -220,7 +214,6 @@ class _TodayRecommendCard extends StatelessWidget {
                 ],
               ),
             ),
-            Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
               child: Row(

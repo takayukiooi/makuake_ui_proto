@@ -25,7 +25,7 @@ class ProjectCard extends StatelessWidget {
     final collectedMoney = formatter.format(project.collectedMoney);
 
     return InkWell(
-      onTap: () => Navigator.of(context).push(ProjectPage.route(id: project.id)),
+      onTap: () => Navigator.of(context).push(ProjectPage.route(url: project.url ?? '')),
       child: Card(
         child: Column(
           children: [

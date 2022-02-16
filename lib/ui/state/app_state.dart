@@ -1,14 +1,10 @@
-import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class AppState extends ChangeNotifier {
-  late bool isLogin;
+part 'app_state.freezed.dart';
 
-  AppState({
-    this.isLogin = false,
-  });
-
-  void loginSucceed() {
-    isLogin = true;
-    notifyListeners();
-  }
+@freezed
+class AppState with _$AppState {
+  factory AppState({
+    @Default(false) bool login,
+  }) = _AppState;
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:makuake_ui_proto/ui/components/popup_dialog.dart';
+import 'package:makuake_ui_proto/ui/favorite/favorite_page.dart';
+import 'package:makuake_ui_proto/ui/home/home_page.dart';
+import 'package:makuake_ui_proto/ui/home/popup/will_close_soon.dart';
+import 'package:makuake_ui_proto/ui/my/my_page.dart';
 import 'package:makuake_ui_proto/ui/pages/discover_page.dart';
-import 'package:makuake_ui_proto/ui/pages/favorite_page.dart';
-import 'package:makuake_ui_proto/ui/pages/home_page.dart';
-import 'package:makuake_ui_proto/ui/pages/my_page.dart';
 import 'package:makuake_ui_proto/ui/pages/notification_page.dart';
 import 'package:makuake_ui_proto/ui/simple_tab_navigator.dart';
 
@@ -136,6 +138,16 @@ class _TabRootState extends State<TabRoot> {
               child: model.navigator,
             );
           }).toList(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              PopupDialog(
+                child: WillCloseSoon(),
+              ),
+            );
+          },
         ),
         bottomNavigationBar: BottomAppBar(
           child: Padding(
